@@ -1,0 +1,43 @@
+/* Same border tokens as AtlasCharts (src/index.css). */
+:root {
+  --atlas-border: color-mix(in srgb, var(--mantine-color-text) 10%, transparent);
+  --atlas-hairline: color-mix(in srgb, var(--mantine-color-text) 8%, transparent);
+}
+
+[data-mantine-color-scheme] .mantine-Paper-root,
+[data-mantine-color-scheme] .mantine-Card-root {
+  --paper-border-color: var(--atlas-border);
+  --border-color: var(--atlas-border);
+}
+
+.mantine-AppShell-root,
+.mantine-AppShell-header,
+.mantine-AppShell-navbar,
+.mantine-AppShell-aside {
+  --app-shell-border-color: var(--atlas-border);
+}
+
+[data-mantine-color-scheme] .mantine-Table-table {
+  --table-border-color: var(--atlas-hairline);
+}
+
+[data-mantine-color-scheme] .mantine-Divider-root {
+  --divider-color: var(--atlas-hairline);
+}
+
+/* Mantine paints Paper with the page color; the palette puts cards on their own surface. */
+.mantine-Paper-root,
+.mantine-Card-root {
+  background-color: var(--atlas-surface);
+}
+
+/* Text on the primary is set per brand: the card color unless it fails contrast there. */
+.mantine-NavLink-root[data-active],
+.mantine-Button-root.atlas-on-primary,
+.atlas-primary-control .mantine-SegmentedControl-label[data-active] {
+  color: var(--atlas-on-primary);
+}
+
+.mantine-NavLink-root[data-active] .mantine-NavLink-label {
+  font-weight: 700;
+}
