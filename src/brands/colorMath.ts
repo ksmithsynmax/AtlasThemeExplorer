@@ -91,6 +91,12 @@ function oklab(hex: string) {
   ];
 }
 
+/** OKLCH hue, 0 to 360 degrees. */
+export function hue(hex: string) {
+  const [, a, b] = oklab(hex);
+  return ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360;
+}
+
 export function difference(a: string, b: string) {
   const p = oklab(a);
   const q = oklab(b);

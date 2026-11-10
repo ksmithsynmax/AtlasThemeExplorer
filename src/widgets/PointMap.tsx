@@ -78,7 +78,7 @@ export function PointMap({ points, center, zoom, height = 300, icons }: PointMap
           'circle-color': ['get', 'color'],
           'circle-opacity': 0.9,
           'circle-stroke-width': 1,
-          'circle-stroke-color': scheme === 'dark' ? '#111' : '#fff',
+          'circle-stroke-color': scheme === 'dark' ? '#131928' : '#FFFFFF',
         },
       });
 

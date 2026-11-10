@@ -145,7 +145,7 @@ export function AuditPanel() {
           <UseRow key={u.key} use={u} />
         ))}
         <Text size="xs" c="dimmed">
-          Gray and Vulcan's white glyphs (told apart by shape) are treated as neutral and not audited.
+          Vulcan's white glyphs (told apart by shape) are treated as neutral and not audited.
         </Text>
       </Stack>
     </Stack>

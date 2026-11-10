@@ -35,7 +35,7 @@ export interface AuditResult {
   remapped: { meaning: Meaning; color: Swatch }[];
 }
 
-const NEUTRAL = new Set([hexOf('gray'), hexOf('vulGlyph')]);
+const NEUTRAL = new Set([hexOf('vulGlyph')]);
 const isData = (u: ColorUse) => u.kind === 'meaning' || u.kind === 'series' || u.kind === 'reserved';
 
 export function auditScreen(widgetIds: WidgetId[], ctx: ResolveContext): AuditResult {

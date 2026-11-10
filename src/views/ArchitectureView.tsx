@@ -29,7 +29,7 @@ function GroupNode({ label, children }: { label: string; children: ReactNode }) 
   return (
     <Paper p="sm" style={{ border: '1.5px dashed var(--atlas-border)' }}>
       <Text size="xs" tt="uppercase" fw={700} c="dimmed" ta="center" mb="xs">
-        {label} · no palette
+        {label}
       </Text>
       <Group gap="md" align="flex-start" wrap="nowrap">
         {children}

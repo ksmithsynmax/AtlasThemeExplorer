@@ -1,7 +1,7 @@
 import { DEFAULT_THEME, type MantineColorsTuple } from '@mantine/core';
 import {
   BRAND_THEMES,
-  SERIES_TOKENS,
+  BRAND_COLOR_TOKENS,
   type BrandId,
   type BrandTheme,
   type Mode,
@@ -17,20 +17,20 @@ export function ramp(hex: string): MantineColorsTuple {
   return [...tints, hex, ...shades] as unknown as MantineColorsTuple;
 }
 
-type SeriesToken = (typeof SERIES_TOKENS)[number];
+type BrandToken = (typeof BRAND_COLOR_TOKENS)[number];
 
 /**
  * Mantine color name for a brand's series token: the brand id itself for
  * Primary (`maritime`), otherwise e.g. `maritimeAccent1`.
  */
-export type BrandColor = BrandId | `${BrandId}${Capitalize<Exclude<SeriesToken, 'primary'>>}`;
+export type BrandColor = BrandId | `${BrandId}${Capitalize<Exclude<BrandToken, 'primary'>>}`;
 
-export function brandColor(brand: BrandId, token: SeriesToken): BrandColor {
+export function brandColor(brand: BrandId, token: BrandToken): BrandColor {
   return (token === 'primary' ? brand : `${brand}${token[0].toUpperCase()}${token.slice(1)}`) as BrandColor;
 }
 
 export function brandColorEntries(brands: BrandTheme[], mode: Mode): [BrandColor, string][] {
-  return brands.flatMap((b) => SERIES_TOKENS.map((t) => [brandColor(b.id, t), b.modes[mode][t]] as [BrandColor, string]));
+  return brands.flatMap((b) => BRAND_COLOR_TOKENS.map((t) => [brandColor(b.id, t), b.modes[mode][t]] as [BrandColor, string]));
 }
 
 /**

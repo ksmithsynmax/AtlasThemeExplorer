@@ -1,5 +1,6 @@
 import { groupLead, meanings, owners, registryColors, reserved, type OwnerId, type SemanticRole } from './domains';
-import { hexOf, type ColorName, type Swatch } from './palettes';
+import { brandColor, hexOf, type ColorName, type Swatch } from './palettes';
+import { bestSeriesOrder, type SeriesOrderId } from './seriesOrder';
 
 /** Where domain color shows up in the UI. */
 export type ApproachId = 'scoped' | 'shell' | 'unified';
@@ -58,7 +59,7 @@ export const dataModes: Option<DataModeId>[] = [
     letter: '3',
     name: 'Unique',
     tagline: 'Every meaning in Atlas owns a color',
-    rule: 'One registry gives every meaning a unique hue. Plain series use shades of the domain color.',
+    rule: 'One registry gives every meaning its own palette color. Plain series use the domain palette.',
   },
 ];
 
@@ -78,6 +79,7 @@ export interface ResolveContext {
   focus: OwnerId | null;
   /** Hyperion, BasinIQ and Vulcan all wear Hyperion's palette as one Energy group. */
   groupEnergy?: boolean;
+  seriesOrder?: SeriesOrderId;
 }
 
 export interface ResolvedScope {
@@ -93,8 +95,7 @@ export interface ResolvedScope {
 }
 
 const reservedHexes = new Set(Object.values(reserved).map((c) => hexOf(c)));
-const shiftFallback: ColorName[] = ['indigo', 'violet', 'pink', 'cyan', 'grape', 'yellow'];
-const rampShades = [4, 7, 2, 9];
+const shiftFallback: ColorName[] = ['atlasSecondary', 'atlasAccent1', 'atlasAccent2', 'atlasAccent3', 'atlasSuccess'];
 
 export function identityOf(owner: OwnerId, ctx: Pick<ResolveContext, 'groupEnergy'>): OwnerId {
   const group = owners[owner].group;
@@ -147,18 +148,14 @@ export function resolveScope(owner: OwnerId, meaningKeys: string[], ctx: Resolve
       meaningColors[key] = reserved[m.semantic];
       meaningRoles[key] = m.semantic;
     } else {
-      meaningColors[key] = reservedHexes.has(hexOf(m.native)) ? (m.alt ?? 'gray') : m.native;
+      meaningColors[key] = reservedHexes.has(hexOf(m.native)) ? (m.alt ?? brandColor(m.owner, 'secondary')) : m.native;
     }
   }
 
   // Series follow whichever domain the widget visibly belongs to.
   const palette = owners[accentOwner].categorical;
-  const series: Swatch[] =
-    dataMode === 'unique'
-      ? rampShades.map((s) => `${owners[accentOwner].color}.${s}` as Swatch)
-      : dataMode === 'reserved'
-        ? shiftOffReserved(palette)
-        : palette;
+  const shifted = dataMode === 'reserved' ? shiftOffReserved(palette) : palette;
+  const series: Swatch[] = ctx.seriesOrder === 'best' ? bestSeriesOrder(shifted) : shifted;
 
   return { owner, identity, accentOwner, accent, meaningColors, meaningRoles, series };
 }

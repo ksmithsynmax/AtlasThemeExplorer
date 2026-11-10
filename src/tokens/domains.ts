@@ -58,8 +58,8 @@ export const groupLead: Record<string, OwnerId> = { Energy: 'hyperion' };
 
 /** Reserved semantic colors. Only the hybrid approach enforces them globally. */
 export const reserved: Record<SemanticRole, ColorName> = {
-  alert: 'red',
-  warning: 'orange',
+  alert: 'atlasError',
+  warning: 'atlasWarning',
 };
 
 export interface Meaning {
@@ -89,14 +89,14 @@ const meaningList: Meaning[] = [
   { key: 'hypRig', label: 'Rigs', owner: 'hyperion', native: 'hypRig' },
   { key: 'hypFrac', label: 'Frac crews', owner: 'hyperion', native: 'hypFrac' },
 
-  { key: 'producing', label: 'Producing well', owner: 'basiniq', native: 'green' },
-  { key: 'drilling', label: 'Drilling', owner: 'basiniq', native: 'lime' },
-  { key: 'permitted', label: 'Permitted', owner: 'basiniq', native: 'cyan' },
-  { key: 'shutin', label: 'Shut-in', owner: 'basiniq', native: 'gray' },
+  { key: 'producing', label: 'Producing well', owner: 'basiniq', native: 'basiniq' },
+  { key: 'drilling', label: 'Drilling', owner: 'basiniq', native: 'basiniqAccent1' },
+  { key: 'permitted', label: 'Permitted', owner: 'basiniq', native: 'basiniqSecondary' },
+  { key: 'shutin', label: 'Shut-in', owner: 'basiniq', native: 'basiniqAccent2' },
 
-  { key: 'flare', label: 'Flare event', owner: 'vulcan', native: 'red', alt: 'pink' },
-  { key: 'exceedance', label: 'Emissions exceedance', owner: 'vulcan', native: 'orange', semantic: 'alert' },
-  { key: 'compliant', label: 'Within limits', owner: 'vulcan', native: 'gray' },
+  { key: 'flare', label: 'Flare event', owner: 'vulcan', native: 'vulcanError', alt: 'vulcanAccent2' },
+  { key: 'exceedance', label: 'Emissions exceedance', owner: 'vulcan', native: 'vulcanAccent3', semantic: 'alert' },
+  { key: 'compliant', label: 'Within limits', owner: 'vulcan', native: 'vulcanSuccess' },
 
   { key: 'solar', label: 'Solar', owner: 'vulcan', native: 'vulGlyph' },
   { key: 'naturalGas', label: 'Natural gas', owner: 'vulcan', native: 'vulGlyph' },
@@ -123,18 +123,18 @@ export const registryColors: Record<string, ColorName> = {
   dark: 'detDark',
   unattributed: 'detUnattributed',
   spoofedPosition: 'detSpoofing',
-  spoofingShip: 'pink.9',
-  stsAis: 'teal.3',
+  spoofingShip: 'atlasAccent1',
+  stsAis: 'maritime',
   sts: 'detSts',
   similar: 'detSimilar',
   zombie: 'detZombie',
-  producing: 'teal',
-  drilling: 'lime',
-  permitted: 'cyan',
-  shutin: 'gray',
-  flare: 'pink',
-  exceedance: 'violet',
-  compliant: 'gray',
+  producing: 'basiniq',
+  drilling: 'basiniqAccent1',
+  permitted: 'basiniqSecondary',
+  shutin: 'basiniqAccent2',
+  flare: 'vulcan',
+  exceedance: 'hyperionAccent3',
+  compliant: 'vulcanSuccess',
   hypWell: 'hypWell',
   hypRig: 'hypRig',
   hypFrac: 'hypFrac',

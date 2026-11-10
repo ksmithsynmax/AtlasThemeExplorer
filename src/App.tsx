@@ -27,13 +27,24 @@ import {
   type ApproachId,
   type DataModeId,
 } from './tokens/approaches';
+import { seriesOrders, type SeriesOrderId } from './tokens/seriesOrder';
 import { ArchitectureView } from './views/ArchitectureView';
 import { AuditPanel } from './views/AuditPanel';
 import { ChatView } from './views/ChatView';
 import { CompareView } from './views/CompareView';
 import { DashboardView } from './views/DashboardView';
 import { PalettesView } from './views/PalettesView';
+import { PatternsView } from './views/PatternsView';
+import { patterns, type PatternId } from './data/reference/patterns';
+import {
+  compareStyles,
+  levelStyles,
+  type CompareStyleId,
+  type LevelStyleId,
+} from './tokens/patternColors';
 import { BrandPalettesProvider, useBrandPalettes } from './brands/BrandPalettesContext';
+
+const isPatternView = (view: ViewId): view is `pattern-${PatternId}` => view.startsWith('pattern-');
 
 function ColorSchemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
@@ -62,6 +73,12 @@ function Layout() {
     setScopeOutlines,
     groupEnergy,
     setGroupEnergy,
+    seriesOrder,
+    setSeriesOrder,
+    compareStyle,
+    setCompareStyle,
+    levelStyle,
+    setLevelStyle,
   } = useExplorer();
   const isScenario = (dashboardScenarios as ViewId[]).includes(view);
   const [auditOpen, { toggle: toggleAudit }] = useDisclosure(false);
@@ -125,6 +142,45 @@ function Layout() {
                       {dataModeById[dataMode].rule}
                     </Text>
                   </Stack>
+                  <Stack gap={4}>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                      Series order
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      size="xs"
+                      value={seriesOrder}
+                      onChange={(v) => setSeriesOrder(v as SeriesOrderId)}
+                      data={seriesOrders.map((o) => ({ value: o.id, label: o.name }))}
+                    />
+                    <Text size="xs" c="dimmed">
+                      {seriesOrders.find((o) => o.id === seriesOrder)?.rule}
+                    </Text>
+                  </Stack>
+                  <Stack gap={4}>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                      Pairs (last year, their number)
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      size="xs"
+                      value={compareStyle}
+                      onChange={(v) => setCompareStyle(v as CompareStyleId)}
+                      data={compareStyles.map((o) => ({ value: o.id, label: o.name }))}
+                    />
+                  </Stack>
+                  <Stack gap={4}>
+                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                      Ordered levels
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      size="xs"
+                      value={levelStyle}
+                      onChange={(v) => setLevelStyle(v as LevelStyleId)}
+                      data={levelStyles.map((o) => ({ value: o.id, label: o.name }))}
+                    />
+                  </Stack>
                   <Switch
                     size="sm"
                     label="Scope outlines"
@@ -178,6 +234,17 @@ function Layout() {
           <NavLink key={id} label={scenarios[id].label} active={view === id} onClick={() => setView(id)} />
         ))}
         <Text size="xs" tt="uppercase" fw={700} c="dimmed" px="sm" mt="md" mb={4}>
+          Patterns
+        </Text>
+        {patterns.map((p) => (
+          <NavLink
+            key={p.id}
+            label={p.label}
+            active={view === `pattern-${p.id}`}
+            onClick={() => setView(`pattern-${p.id}`)}
+          />
+        ))}
+        <Text size="xs" tt="uppercase" fw={700} c="dimmed" px="sm" mt="md" mb={4}>
           Decide
         </Text>
         <NavLink label="Compare approaches" active={view === 'compare'} onClick={() => setView('compare')} />
@@ -189,7 +256,9 @@ function Layout() {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        {view === 'palettes' ? (
+        {isPatternView(view) ? (
+          <PatternsView pattern={view.slice('pattern-'.length) as PatternId} />
+        ) : view === 'palettes' ? (
           <PalettesView />
         ) : view === 'compare' ? (
           <CompareView />
